@@ -2,9 +2,7 @@
 
 set -ex
 
-
 # start the docker daemon
 /usr/local/bin/wrapdocker &
 
-# start the ssh daemon
-/usr/sbin/sshd -D
+java -jar swarm-client-1.22-jar-with-dependencies.jar -master http://$MASTER_PORT_8080_TCP_ADDR:$MASTER_PORT_8080_TCP_PORT $EXTRA_PARAMS
