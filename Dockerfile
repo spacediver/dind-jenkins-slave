@@ -28,15 +28,20 @@ ENV DOCKER_VERSION 1.7.0
 # Install Docker from Docker Inc. repositories.
 RUN apt-get update && apt-get install -y lxc-docker=$DOCKER_VERSION && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y python-pip python-dev
+
+RUN pip install ansible==1.9.1
+
+# We should stick to 1.1.0 for a tricky reason
+RUN pip install docker-py==1.1.0 
+
 ADD wrapdocker /usr/local/bin/wrapdocker
 RUN chmod +x /usr/local/bin/wrapdocker
 VOLUME /var/lib/docker
 
-
 # Make sure that the "jenkins" user from evarga's image is part of the "docker"
 # group. Needed to access the docker daemon's unix socket.
 RUN usermod -a -G docker jenkins
-
 
 # place the jenkins slave startup script into the container
 ADD jenkins-slave-startup.sh /
